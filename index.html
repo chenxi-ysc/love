@@ -17,6 +17,17 @@
 .STYLE1 {color: #666666}
 -->
         </style>
+<script type="text/javascript">
+     
+     //定义变量获取屏幕视口宽度
+     window.onload = function(){
+     var windowWidth = $(window).width();
+     if(windowWidth < 1000){
+         document.getElementById("main").style.transform = "rotate(90deg)";
+     }
+    }
+   
+</script>
 </head>
     <body>
 			<audio autoplay="autopaly">
@@ -68,6 +79,7 @@
 
         var width = canvas.width();
         var height = canvas.height();
+        var windowWidth = $(window).width();
         
         canvas.attr("width", width);
         canvas.attr("height", height);
@@ -117,17 +129,29 @@
             var offset = canvas.offset(), x, y;
             x = e.pageX - offset.left;
             y = e.pageY - offset.top;
+            if(windowWidth < 1000){
+                if (seed.hover(y, x)) {
+                hold = 0; 
+                canvas.unbind("click");
+                canvas.unbind("mousemove");
+                canvas.removeClass('hand');
+                }
+            }
+            else{
             if (seed.hover(x, y)) {
                 hold = 0; 
                 canvas.unbind("click");
                 canvas.unbind("mousemove");
                 canvas.removeClass('hand');
             }
-        }).mousemove(function(e){
+        }
+        })
+        .mousemove(function(e){
             var offset = canvas.offset(), x, y;
             x = e.pageX - offset.left;
             y = e.pageY - offset.top;
-            canvas.toggleClass('hand', seed.hover(x, y));
+            if(windowWidth < 1000){canvas.toggleClass('hand', seed.hover(y, x));}
+            else{canvas.toggleClass('hand', seed.hover(x, y));}
         });
 
         var seedAnimate = eval(Jscex.compile("async", function () {
